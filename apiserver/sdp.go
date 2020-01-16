@@ -29,7 +29,7 @@ type QuerySdpResponse struct {
 type QuerySdpRequest struct {
 	OriginSdp string `json:"sdp"`
 	Offer     string `json:"offer"`
-	CallSeq   string `json:"callSeq"`
+	Tag   	  string `json:"tag"`
 }
 
 func QuerySdp(c *gin.Context) {
@@ -51,7 +51,7 @@ func StoreSdp(c *gin.Context) {
 	var request QuerySdpRequest
 	c.BindJSON(&request)
 
-	key := "sdp_" + request.CallSeq
+	key := "sdp_" + request.Tag
 	sdpMap[key] = request.OriginSdp
 	fmt.Println("store key", key)
 	c.JSON(http.StatusOK, &QuerySdpResponse{Sdp : ""})
@@ -60,7 +60,7 @@ func StoreSdp(c *gin.Context) {
 func GetSdp(c *gin.Context) {
 	var request QuerySdpRequest
 	c.BindJSON(&request)
-	key := "sdp_" + request.CallSeq
+	key := "sdp_" + request.Tag
 	retSdp := sdpMap[key]
 	fmt.Println("get key", key,)
 	//re := regexp.MustCompile("(?m)[\r\n]+^.*extmap.*$")
