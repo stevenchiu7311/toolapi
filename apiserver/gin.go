@@ -13,6 +13,8 @@ func InitGinServer(bundle *dao.OptBundle) *http.Server {
 	router.Use(gin.Recovery())
 
 	InitSdpApi(router, bundle)
+	InitShareMapApi(router, bundle)
+	InitRedirectApi(router, bundle)
 	port := "8889"
 	httpServer := &http.Server{
 		Addr:         ":" + port,

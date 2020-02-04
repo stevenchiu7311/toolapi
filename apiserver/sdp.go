@@ -34,7 +34,11 @@ type QuerySdpRequest struct {
 
 func QuerySdp(c *gin.Context) {
 	var request QuerySdpRequest
-	c.BindJSON(&request)
+	err := c.BindJSON(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{keyError: InputDataIncorrect})
+		return
+	}
 
 	retSdp := request.OriginSdp
 	fmt.Println("Before process:",retSdp)
@@ -49,7 +53,11 @@ func QuerySdp(c *gin.Context) {
 
 func StoreSdp(c *gin.Context) {
 	var request QuerySdpRequest
-	c.BindJSON(&request)
+	err := c.BindJSON(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{keyError: InputDataIncorrect})
+		return
+	}
 
 	key := "sdp_" + request.Tag
 	sdpMap[key] = request.OriginSdp
@@ -59,7 +67,11 @@ func StoreSdp(c *gin.Context) {
 
 func GetSdp(c *gin.Context) {
 	var request QuerySdpRequest
-	c.BindJSON(&request)
+	err := c.BindJSON(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{keyError: InputDataIncorrect})
+		return
+	}
 	key := "sdp_" + request.Tag
 	retSdp := sdpMap[key]
 	fmt.Println("get key", key,)
